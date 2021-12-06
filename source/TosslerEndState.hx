@@ -18,30 +18,26 @@ import sys.FileSystem;
 
 class TosslerEndState extends MusicBeatState
 {
-	private var videoCurrentlyPlaying:FlxVideo;
-	private var isVideoCurrentlyPlaying:Bool;
+	private var videoCurrentlyPlaying:VideoPlayerD;
+	// private var isVideoCurrentlyPlaying:Bool;
 
 	override function create()
 	{
 		super.create();
 
-		function videoIntro(name:String):Void {
-			#if VIDEOS_ALLOWED
+		function videoIntro(source:String):Void {
+			// #if VIDEOS_ALLOWED
 			var foundFile:Bool = false;
-			var fileName:String = #if MODS_ALLOWED Paths.mods('videos/' + name + '.' + Paths.VIDEO_EXT); #else ''; #end
-			#if sys
-			if(FileSystem.exists(fileName)) {
-				foundFile = true;
-			}
-			#end
+			var fileName:String = '';
+			var pathsvideo:String = 'assets/videos/';
 	
 			if(!foundFile) {
-				fileName = Paths.video(name);
-				#if sys
-				if(FileSystem.exists(fileName)) {
-				#else
+				fileName = pathsvideo + source;
+				// #if sys
+				// if(FileSystem.exists(fileName)) {
+				// #else
 				if(OpenFlAssets.exists(fileName)) {
-				#end
+				// #end
 					foundFile = true;
 				}
 			}
@@ -50,20 +46,20 @@ class TosslerEndState extends MusicBeatState
 				var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
 				bg.scrollFactor.set();
 				add(bg);
-				videoCurrentlyPlaying = new FlxVideo(fileName);
-				isVideoCurrentlyPlaying = true;
+				videoCurrentlyPlaying = new VideoPlayerD(fileName);
+				// isVideoCurrentlyPlaying = true;
 	
 				(videoCurrentlyPlaying).finishCallback = function() {
 					remove(bg);
 					FlxG.sound.playMusic(Paths.music('menu_variation_0'));
 					MusicBeatState.switchState(new StoryMenuState());
-					isVideoCurrentlyPlaying = false;
+					// isVideoCurrentlyPlaying = false;
 				}
 				return;
 			} else {
 				FlxG.log.warn('Couldnt find video file: ' + fileName);
 			}
-			#end
+			// #end
 			FlxG.sound.playMusic(Paths.music('menu_variation_0'));
 			MusicBeatState.switchState(new StoryMenuState());
 		}
@@ -80,15 +76,15 @@ class TosslerEndState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{		
-		//stole this from taeyai (taeyai is so cool)
-		if(isVideoCurrentlyPlaying)
-		{
-			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ESCAPE)
-			{
-				videoCurrentlyPlaying.skipVideo();
-				isVideoCurrentlyPlaying = false;
-			}
-		}
+		// //stole this from taeyai (taeyai is so cool)
+		// if(isVideoCurrentlyPlaying)
+		// {
+		// 	if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ESCAPE)
+		// 	{
+		// 		videoCurrentlyPlaying.skipVideo();
+		// 		isVideoCurrentlyPlaying = false;
+		// 	}
+		// }
 
 		super.update(elapsed);
 	}

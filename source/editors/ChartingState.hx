@@ -40,11 +40,11 @@ import openfl.utils.Assets as OpenFlAssets;
 import lime.media.AudioBuffer;
 import haxe.io.Bytes;
 import flash.geom.Rectangle;
-#if MODS_ALLOWED
-import sys.io.File;
-import sys.FileSystem;
-import flash.media.Sound;
-#end
+// #if MODS_ALLOWED
+// import sys.io.File;
+// import sys.FileSystem;
+// import flash.media.Sound;
+// #end
 
 using StringTools;
 
@@ -349,11 +349,11 @@ class ChartingState extends MusicBeatState
 		{
 			var songName:String = Paths.formatToSongPath(_song.song);
 			var file:String = Paths.json(songName + '/events');
-			#if sys
-			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(songName + '/events')) || #end FileSystem.exists(file))
-			#else
+			// #if sys
+			// if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(songName + '/events')) || #end FileSystem.exists(file))
+			// #else
 			if (OpenFlAssets.exists(file))
-			#end
+			// #end
 			{
 				clearEvents();
 				var events:SwagSong = Song.loadFromJson('events', songName);
@@ -402,11 +402,11 @@ class ChartingState extends MusicBeatState
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 
-		#if MODS_ALLOWED
-		var directories:Array<String> = [Paths.mods('characters/'), Paths.getPreloadPath('characters/')];
-		#else
+		// #if MODS_ALLOWED
+		// var directories:Array<String> = [Paths.mods('characters/'), Paths.getPreloadPath('characters/')];
+		// #else
 		var directories:Array<String> = [Paths.getPreloadPath('characters/')];
-		#end
+		// #end
 
 		var tempMap:Map<String, Bool> = new Map<String, Bool>();
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
@@ -414,23 +414,23 @@ class ChartingState extends MusicBeatState
 			tempMap.set(characters[i], true);
 		}
 
-		#if MODS_ALLOWED
-		for (i in 0...directories.length) {
-			var directory:String = directories[i];
-			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
-					var path = haxe.io.Path.join([directory, file]);
-					if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
-						var charToCheck:String = file.substr(0, file.length - 5);
-						if(!charToCheck.endsWith('-dead') && !tempMap.exists(charToCheck)) {
-							tempMap.set(charToCheck, true);
-							characters.push(charToCheck);
-						}
-					}
-				}
-			}
-		}
-		#end
+		// #if MODS_ALLOWED
+		// for (i in 0...directories.length) {
+		// 	var directory:String = directories[i];
+		// 	if(FileSystem.exists(directory)) {
+		// 		for (file in FileSystem.readDirectory(directory)) {
+		// 			var path = haxe.io.Path.join([directory, file]);
+		// 			if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
+		// 				var charToCheck:String = file.substr(0, file.length - 5);
+		// 				if(!charToCheck.endsWith('-dead') && !tempMap.exists(charToCheck)) {
+		// 					tempMap.set(charToCheck, true);
+		// 					characters.push(charToCheck);
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// #end
 
 		var player1DropDown = new FlxUIDropDownMenuCustom(10, stepperSpeed.y + 45, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
 		{
@@ -456,11 +456,11 @@ class ChartingState extends MusicBeatState
 		player2DropDown.selectedLabel = _song.player2;
 		blockPressWhileScrolling.push(player2DropDown);
 
-		#if MODS_ALLOWED
-		var directories:Array<String> = [Paths.mods('stages/'), Paths.getPreloadPath('stages/')];
-		#else
+		// #if MODS_ALLOWED
+		// var directories:Array<String> = [Paths.mods('stages/'), Paths.getPreloadPath('stages/')];
+		// #else
 		var directories:Array<String> = [Paths.getPreloadPath('stages/')];
-		#end
+		// #end
 
 		tempMap.clear();
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
@@ -472,11 +472,11 @@ class ChartingState extends MusicBeatState
 				var file:String = directories[j] + stages[i] + '.json';
 				//trace('Checking file: ' + file);
 
-				#if MODS_ALLOWED
-				if(FileSystem.exists(file))
-				#else
+				// #if MODS_ALLOWED
+				// if(FileSystem.exists(file))
+				// #else
 				if(OpenFlAssets.exists(file))
-				#end
+				// #end
 				{
 					removeStage = false;
 					tempMap.set(stages[i], true);
@@ -491,23 +491,23 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		#if MODS_ALLOWED
-		for (i in 0...directories.length) {
-			var directory:String = directories[i];
-			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
-					var path = haxe.io.Path.join([directory, file]);
-					if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
-						var stageToCheck:String = file.substr(0, file.length - 5);
-						if(!tempMap.exists(stageToCheck)) {
-							tempMap.set(stageToCheck, true);
-							stages.push(stageToCheck);
-						}
-					}
-				}
-			}
-		}
-		#end
+		// #if MODS_ALLOWED
+		// for (i in 0...directories.length) {
+		// 	var directory:String = directories[i];
+		// 	if(FileSystem.exists(directory)) {
+		// 		for (file in FileSystem.readDirectory(directory)) {
+		// 			var path = haxe.io.Path.join([directory, file]);
+		// 			if (!FileSystem.isDirectory(path) && file.endsWith('.json')) {
+		// 				var stageToCheck:String = file.substr(0, file.length - 5);
+		// 				if(!tempMap.exists(stageToCheck)) {
+		// 					tempMap.set(stageToCheck, true);
+		// 					stages.push(stageToCheck);
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// #end
 
 		if(stages.length < 1) stages.push('stage');
 
@@ -716,23 +716,23 @@ class ChartingState extends MusicBeatState
 			key++;
 		}
 
-		#if LUA_ALLOWED
-		var directory:String =  Paths.mods('custom_notetypes/');
-		if(FileSystem.exists(directory)) {
-			for (file in FileSystem.readDirectory(directory)) {
-				var path = haxe.io.Path.join([directory, file]);
-				if (!FileSystem.isDirectory(path) && file.endsWith('.lua')) {
-					var fileToCheck:String = file.substr(0, file.length - 4);
-					if(!noteTypeMap.exists(fileToCheck)) {
-						displayNameList.push(fileToCheck);
-						noteTypeMap.set(fileToCheck, key);
-						noteTypeIntMap.set(key, fileToCheck);
-						key++;
-					}
-				}
-			}
-		}
-		#end
+		// #if LUA_ALLOWED
+		// var directory:String =  Paths.mods('custom_notetypes/');
+		// if(FileSystem.exists(directory)) {
+		// 	for (file in FileSystem.readDirectory(directory)) {
+		// 		var path = haxe.io.Path.join([directory, file]);
+		// 		if (!FileSystem.isDirectory(path) && file.endsWith('.lua')) {
+		// 			var fileToCheck:String = file.substr(0, file.length - 4);
+		// 			if(!noteTypeMap.exists(fileToCheck)) {
+		// 				displayNameList.push(fileToCheck);
+		// 				noteTypeMap.set(fileToCheck, key);
+		// 				noteTypeIntMap.set(key, fileToCheck);
+		// 				key++;
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// #end
 
 		for (i in 1...displayNameList.length) {
 			displayNameList[i] = i + '. ' + displayNameList[i];
@@ -765,24 +765,24 @@ class ChartingState extends MusicBeatState
 		var tab_group_event = new FlxUI(null, UI_box);
 		tab_group_event.name = 'Events';
 
-		#if LUA_ALLOWED
-		var eventPushedMap:Map<String, Bool> = new Map<String, Bool>();
-		var directory:String =  Paths.mods('custom_events/');
-		if(FileSystem.exists(directory)) {
-			for (file in FileSystem.readDirectory(directory)) {
-				var path = haxe.io.Path.join([directory, file]);
-				if (!FileSystem.isDirectory(path) && file != 'readme.txt' && file.endsWith('.txt')) {
-					var fileToCheck:String = file.substr(0, file.length - 4);
-					if(!eventPushedMap.exists(fileToCheck)) {
-						eventPushedMap.set(fileToCheck, true);
-						eventStuff.push([fileToCheck, File.getContent(path)]);
-					}
-				}
-			}
-		}
-		eventPushedMap.clear();
-		eventPushedMap = null;
-		#end
+		// #if LUA_ALLOWED
+		// var eventPushedMap:Map<String, Bool> = new Map<String, Bool>();
+		// var directory:String =  Paths.mods('custom_events/');
+		// if(FileSystem.exists(directory)) {
+		// 	for (file in FileSystem.readDirectory(directory)) {
+		// 		var path = haxe.io.Path.join([directory, file]);
+		// 		if (!FileSystem.isDirectory(path) && file != 'readme.txt' && file.endsWith('.txt')) {
+		// 			var fileToCheck:String = file.substr(0, file.length - 4);
+		// 			if(!eventPushedMap.exists(fileToCheck)) {
+		// 				eventPushedMap.set(fileToCheck, true);
+		// 				eventStuff.push([fileToCheck, File.getContent(path)]);
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// eventPushedMap.clear();
+		// eventPushedMap = null;
+		// #end
 
 		descText = new FlxText(20, 200, 0, eventStuff[0][0]);
 
@@ -1402,35 +1402,35 @@ class ChartingState extends MusicBeatState
 
 	function loadAudioBuffer() {
 		audioBuffers[0] = null;
-		#if MODS_ALLOWED
-		if(FileSystem.exists(Paths.mods('songs/' + currentSongName + '/Inst.ogg'))) {
-			audioBuffers[0] = AudioBuffer.fromFile(Paths.mods('songs/' + currentSongName + '/Inst.ogg'));
-			//trace('Custom vocals found');
-		}
-		else { #end
+		// #if MODS_ALLOWED
+		// if(FileSystem.exists(Paths.mods('songs/' + currentSongName + '/Inst.ogg'))) {
+		// 	audioBuffers[0] = AudioBuffer.fromFile(Paths.mods('songs/' + currentSongName + '/Inst.ogg'));
+		// 	//trace('Custom vocals found');
+		// }
+		// else { #end
 			var leVocals:Dynamic = Paths.inst(currentSongName);
 			if (!Std.isOfType(leVocals, Sound) && OpenFlAssets.exists(leVocals)) { //Vanilla inst
 				audioBuffers[0] = AudioBuffer.fromFile('./' + leVocals.substr(6));
 				//trace('Inst found');
 			}
-		#if MODS_ALLOWED
-		}
-		#end
+		// #if MODS_ALLOWED
+		// }
+		// #end
 
 		audioBuffers[1] = null;
 		#if MODS_ALLOWED
-		if(FileSystem.exists(Paths.mods('songs/' + currentSongName + '/Voices.ogg'))) {
-			audioBuffers[1] = AudioBuffer.fromFile(Paths.mods('songs/' + currentSongName + '/Voices.ogg'));
-			//trace('Custom vocals found');
-		} else { #end
+		// if(FileSystem.exists(Paths.mods('songs/' + currentSongName + '/Voices.ogg'))) {
+		// 	audioBuffers[1] = AudioBuffer.fromFile(Paths.mods('songs/' + currentSongName + '/Voices.ogg'));
+		// 	//trace('Custom vocals found');
+		// } else { #end
 			var leVocals:Dynamic = Paths.voices(currentSongName);
 			if (!Std.isOfType(leVocals, Sound) && OpenFlAssets.exists(leVocals)) { //Vanilla voices
 				audioBuffers[1] = AudioBuffer.fromFile('./' + leVocals.substr(6));
 				//trace('Voices found, LETS FUCKING GOOOO');
 			}
-		#if MODS_ALLOWED
-		}
-		#end
+		// #if MODS_ALLOWED
+		// }
+		// #end
 	}
 
 	function reloadGridLayer() {
@@ -1664,26 +1664,26 @@ class ChartingState extends MusicBeatState
 
 	function loadHealthIconFromCharacter(char:String) {
 		var characterPath:String = 'characters/' + char + '.json';
-		#if MODS_ALLOWED
-		var path:String = Paths.mods(characterPath);
-		if (!FileSystem.exists(path)) {
-			path = Paths.getPreloadPath(characterPath);
-		}
+		// #if MODS_ALLOWED
+		// var path:String = Paths.mods(characterPath);
+		// if (!FileSystem.exists(path)) {
+		// 	path = Paths.getPreloadPath(characterPath);
+		// }
 
-		if (!FileSystem.exists(path))
-		#else
+		// if (!FileSystem.exists(path))
+		// #else
 		var path:String = Paths.getPreloadPath(characterPath);
 		if (!OpenFlAssets.exists(path))
-		#end
+		// #end
 		{
 			path = Paths.getPreloadPath('characters/' + Character.DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 		}
 
-		#if MODS_ALLOWED
-		var rawJson = File.getContent(path);
-		#else
+		// #if MODS_ALLOWED
+		// var rawJson = File.getContent(path);
+		// #else
 		var rawJson = OpenFlAssets.getText(path);
-		#end
+		// #end
 
 		var json:Character.CharacterFile = cast Json.parse(rawJson);
 		return json.healthicon;

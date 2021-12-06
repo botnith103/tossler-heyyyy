@@ -48,6 +48,7 @@ import editors.CharacterEditorState;
 import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
+import ui.Mobilecontrols;
 
 #if sys
 import sys.FileSystem;
@@ -96,9 +97,9 @@ class PlayState extends MusicBeatState
 	public var gfMap:Map<String, Character> = new Map<String, Character>();
 	#end
 
-	private var videoCurrentlyPlaying:FlxVideo;
+	private var videoCurrentlyPlaying:VideoPlayerD;
 	var killthatStupidAssTimer:Bool = false;
-	private var isVideoCurrentlyPlaying:Bool;
+	// private var isVideoCurrentlyPlaying:Bool;
 	public var BF_X:Float = 770;
 	public var BF_Y:Float = 100;
 	public var DAD_X:Float = 100;
@@ -170,6 +171,7 @@ class PlayState extends MusicBeatState
 
 	var botplaySine:Float = 0;
 	var botplayTxt:FlxText;
+	var daninnocentTxt:FlxText;
 
 	public var iconP1:HealthIcon;
 	public var iconP2:HealthIcon;
@@ -285,6 +287,10 @@ class PlayState extends MusicBeatState
 	public var backgroundGroup:FlxTypedGroup<FlxSprite>;
 	public var foregroundGroup:FlxTypedGroup<FlxSprite>;
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
+
+	#if mobileC
+	var mcontrols:Mobilecontrols; 
+	#end
 
 	override public function create()
 	{
@@ -858,6 +864,12 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
+		daninnocentTxt = new FlxText(876, 648, 348);
+        daninnocentTxt.text = "PORTED BY DANINNOCENT";
+        daninnocentTxt.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+        daninnocentTxt.scrollFactor.set();
+        add(daninnocentTxt);
+
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -871,6 +883,30 @@ class PlayState extends MusicBeatState
 		timeBarBG.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+		daninnocentTxt.cameras = [camHUD];
+
+		#if mobileC
+		mcontrols = new Mobilecontrols();
+		switch (mcontrols.mode)
+		{
+			case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
+				controls.setVirtualPad(mcontrols._virtualPad, FULL, NONE);
+			case HITBOX:
+				controls.setHitBox(mcontrols._hitbox);
+			default:
+		}
+		trackedinputs = controls.trackedinputs;
+		controls.trackedinputs = [];
+
+		var camcontrol = new FlxCamera();
+		FlxG.cameras.add(camcontrol);
+		camcontrol.bgColor.alpha = 0;
+		mcontrols.cameras = [camcontrol];
+
+		mcontrols.visible = false;
+
+		add(mcontrols);
+	    #end
 
 		if (SONG.song.toLowerCase() == 'doomah')
 		{
@@ -1041,23 +1077,19 @@ class PlayState extends MusicBeatState
 		char.y += char.positionArray[1];
 	}
 
-	public function videoIntro(name:String):Void {
-		#if VIDEOS_ALLOWED
+	public function videoIntro(source:String):Void {
+		// #if VIDEOS_ALLOWED
 		var foundFile:Bool = false;
-		var fileName:String = #if MODS_ALLOWED Paths.mods('videos/' + name + '.' + Paths.VIDEO_EXT); #else ''; #end
-		#if sys
-		if(FileSystem.exists(fileName)) {
-			foundFile = true;
-		}
-		#end
+		var fileName:String = '';
+		var pathsvideo:String = 'assets/videos/';
 
 		if(!foundFile) {
-			fileName = Paths.video(name);
-			#if sys
-			if(FileSystem.exists(fileName)) {
-			#else
+			fileName = pathsvideo + source;
+			// #if sys
+			// if(FileSystem.exists(fileName)) {
+			// #else
 			if(OpenFlAssets.exists(fileName)) {
-			#end
+			// #end
 				foundFile = true;
 			}
 		}
@@ -1067,19 +1099,19 @@ class PlayState extends MusicBeatState
 			var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
 			bg.scrollFactor.set();
 			add(bg);
-			videoCurrentlyPlaying = new FlxVideo(fileName);
-			isVideoCurrentlyPlaying = true;
+			videoCurrentlyPlaying = new VideoPlayerD(fileName);
+			// isVideoCurrentlyPlaying = true;
 
 			(videoCurrentlyPlaying).finishCallback = function() {
 				remove(bg);
 				fadeIn();
-				isVideoCurrentlyPlaying = false;
+				// isVideoCurrentlyPlaying = false;
 			}
 			return;
 		} else {
 			FlxG.log.warn('Couldnt find video file: ' + fileName);
 		}
-		#end
+		// #end
 		fadeIn();
 	}
 
@@ -1197,6 +1229,10 @@ class PlayState extends MusicBeatState
 
 	public function startCountdown():Void
 	{
+		#if mobileC
+		mcontrols.visible = true;
+		#end
+
 		if(startedCountdown) {
 			callOnLuas('onStartCountdown', []);
 			return;
@@ -1447,11 +1483,11 @@ class PlayState extends MusicBeatState
 
 		var songName:String = Paths.formatToSongPath(SONG.song);
 		var file:String = Paths.json(songName + '/events');
-		#if sys
-		if (FileSystem.exists(Paths.modsJson(songName + '/events')) || FileSystem.exists(file)) {
-		#else
+		// #if sys
+		// if (FileSystem.exists(Paths.modsJson(songName + '/events')) || FileSystem.exists(file)) {
+		// #else
 		if (OpenFlAssets.exists(file)) {
-		#end
+		// #end
 			var eventsData:Array<SwagSection> = Song.loadFromJson('events', songName).notes;
 			for (section in eventsData)
 			{
@@ -2330,7 +2366,7 @@ class PlayState extends MusicBeatState
 		}
 		botplayTxt.visible = cpuControlled;
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+		if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end && (startedCountdown && canPause))
 		{
 			var ret:Dynamic = callOnLuas('onPause', []);
 			if(ret != FunkinLua.Function_Stop) {
@@ -2860,15 +2896,15 @@ class PlayState extends MusicBeatState
 			}
 		}
 		
-		//stole this from aikoyori :p
-		if(isVideoCurrentlyPlaying)
-		{
-			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ESCAPE)
-			{
-				videoCurrentlyPlaying.skipVideo();
-				isVideoCurrentlyPlaying = false;
-			}
-		}
+		// //stole this from aikoyori :p
+		// if(isVideoCurrentlyPlaying)
+		// {
+		// 	if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ESCAPE)
+		// 	{
+		// 		videoCurrentlyPlaying.skipVideo();
+		// 		isVideoCurrentlyPlaying = false;
+		// 	}
+		// }
 
 		#if debug
 		if(!endingSong && !startingSong) {
@@ -3383,7 +3419,10 @@ class PlayState extends MusicBeatState
 	var transitioning = false;
 	function endSong():Void
 	{
-		
+
+		#if mobileC
+		mcontrols.visible = false;
+		#end
 
 		//Should kill you if you tried to cheat
 		if(!startingSong) {
