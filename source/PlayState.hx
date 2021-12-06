@@ -1077,42 +1077,16 @@ class PlayState extends MusicBeatState
 		char.y += char.positionArray[1];
 	}
 
-	public function videoIntro(source:String):Void {
-		// #if VIDEOS_ALLOWED
-		var foundFile:Bool = false;
-		var fileName:String = '';
-		var pathsvideo:String = 'assets/videos/';
-
-		if(!foundFile) {
-			fileName = pathsvideo + source;
-			// #if sys
-			// if(FileSystem.exists(fileName)) {
-			// #else
-			if(OpenFlAssets.exists(fileName)) {
-			// #end
-				foundFile = true;
-			}
+	public function videoIntro(name:String):Void {
+		inCutscene = true;
+		var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+		bg.scrollFactor.set();
+		add(bg);
+		videoCurrentlyPlaying = new VideoPlayerD(name);
+		(videoCurrentlyPlaying).finishCallback = function() {
+			remove(bg);
+			fadeIn();
 		}
-
-		if(foundFile) {
-			inCutscene = true;
-			var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-			bg.scrollFactor.set();
-			add(bg);
-			videoCurrentlyPlaying = new VideoPlayerD(fileName);
-			// isVideoCurrentlyPlaying = true;
-
-			(videoCurrentlyPlaying).finishCallback = function() {
-				remove(bg);
-				fadeIn();
-				// isVideoCurrentlyPlaying = false;
-			}
-			return;
-		} else {
-			FlxG.log.warn('Couldnt find video file: ' + fileName);
-		}
-		// #end
-		fadeIn();
 	}
 
 	var dialogueCount:Int = 0;

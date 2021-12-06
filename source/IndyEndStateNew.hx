@@ -33,9 +33,9 @@ class IndyEndStateNew extends FlxState
 	function playVideo1():Void
 	{
 		if (ClientPrefs.subtitles)
-		video = new VideoPlayerD('assets/videos/week2/subtitles/3');
+		video = new VideoPlayerD('week2/subtitles/3');
 		else
-		video = new VideoPlayerD('assets/videos/week2/Week 2 Cutscene 3 GAME');	
+		video = new VideoPlayerD('week2/Week 2 Cutscene 3 GAME');	
 		
 	
 		video.finishCallback = playVideo2; 
@@ -47,9 +47,9 @@ class IndyEndStateNew extends FlxState
 	{
 		
 		if (ClientPrefs.subtitles)
-		video = new VideoPlayerD('assets/videos/week2/subtitles/4');
+		video = new VideoPlayerD('week2/subtitles/4');
 		else
-		video = new VideoPlayerD('assets/videos/week2/Week 2 Cutscene 4 GAME');
+		video = new VideoPlayerD('week2/Week 2 Cutscene 4 GAME');
 			
 		
 		video.finishCallback = playCredits;
@@ -59,7 +59,7 @@ class IndyEndStateNew extends FlxState
 
 	function playCredits():Void
 	{
-		video = new VideoPlayerD('assets/videos/week2/Week 2 Credits GAME');
+		video = new VideoPlayerD('week2/Week 2 Credits GAME');
 		video.finishCallback = back2Menu;
 		curVideo = 'credits';
 		// isVideoCurrentlyPlaying = true;

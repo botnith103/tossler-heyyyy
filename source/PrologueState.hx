@@ -46,43 +46,18 @@ class PrologueState extends MusicBeatState
         super.update(elapsed);
 	}
 
-	public function videoIntro(source:String):Void {
-		// #if VIDEOS_ALLOWED
-		var foundFile:Bool = false;
-		var fileName:String = '';
-		var pathsvideo:String = 'assets/videos/';
+	public function videoIntro(name:String):Void {
+		var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+		bg.scrollFactor.set();
+		add(bg);
+		videoCurrentlyPlaying = new VideoPlayerD(name);
 
-		if(!foundFile) {
-			fileName = pathsvideo + source;
-			// #if sys
-			// if(FileSystem.exists(fileName)) {
-			// #else
-			if(OpenFlAssets.exists(fileName)) {
-			// #end
-				foundFile = true;
-			}
+		(videoCurrentlyPlaying).finishCallback = function() {
+			remove(bg);
+			MusicBeatState.switchState(new TitleState());
+            TitleState.lol = false;
 		}
-
-        if(foundFile) {
-			var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-			bg.scrollFactor.set();
-			add(bg);
-			videoCurrentlyPlaying = new VideoPlayerD(fileName);
-			// isVideoCurrentlyPlaying = true;
-
-			(videoCurrentlyPlaying).finishCallback = function() {
-				remove(bg);
-				MusicBeatState.switchState(new TitleState());
-                // isVideoCurrentlyPlaying = false;
-                TitleState.lol = false;
-			}
-			return;
-		} else {
-			FlxG.log.warn('Couldnt find video file: ' + fileName);
-		}
-		// #end
 		MusicBeatState.switchState(new TitleState());
-        // isVideoCurrentlyPlaying = false;
         TitleState.lol = false;
 	}
 }

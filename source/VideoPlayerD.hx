@@ -14,6 +14,8 @@ class VideoPlayerD extends FlxBasic
 {
 	public static var androidPath:String = 'file:///android_asset/';
 
+	public static var source1:String = 'assets/videos/';
+
 	// public var nextState:FlxState;
 
     public var finishCallback:Void->Void = null;
@@ -35,10 +37,10 @@ class VideoPlayerD extends FlxBasic
 
 		//FlxG.autoPause = false;
 
-		// WebView.onClose=onClose;
+		WebView.onClose=onClose;
 		WebView.onURLChanging=onURLChanging;
 
-		WebView.open(androidPath + source + '.html', false, null, ['http://exitme(.*)']);
+		WebView.open(androidPath + source1 + source + '.html', false, null, ['http://exitme(.*)']);
 	}
 
 	public override function update(dt:Float) {
@@ -49,17 +51,17 @@ class VideoPlayerD extends FlxBasic
 		super.update(dt);	
 	}
 
-	// function onClose(){// not working
-	// 	text.alpha = 0;
-	// 	//FlxG.autoPause = true;
-	// 	trace('close!');
-	// 	// trace(nextState);
-	// 	// FlxG.switchState(nextState);
-	// }
+	function onClose(){// not working
+	 	trace('video closed lmao');
+		if (finishCallback != null)
+		{
+			finishCallback();
+		}
+	 }
 
 	function onURLChanging(url:String) {
 		text.alpha = 1;
-		if (url == 'http://exitme/') finishCallback(); // drity hack lol
+		if (url == 'http://exitme/') onClose(); // drity hack lol
 		trace("WebView is about to open: "+url);
 	}
 }
