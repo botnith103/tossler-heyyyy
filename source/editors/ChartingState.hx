@@ -1418,7 +1418,7 @@ class ChartingState extends MusicBeatState
 		// #end
 
 		audioBuffers[1] = null;
-		#if MODS_ALLOWED
+		// #if MODS_ALLOWED
 		// if(FileSystem.exists(Paths.mods('songs/' + currentSongName + '/Voices.ogg'))) {
 		// 	audioBuffers[1] = AudioBuffer.fromFile(Paths.mods('songs/' + currentSongName + '/Voices.ogg'));
 		// 	//trace('Custom vocals found');
