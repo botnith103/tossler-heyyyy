@@ -46,7 +46,7 @@ class VideoPlayerD extends FlxBasic
 	public override function update(dt:Float) {
 		for (touch in FlxG.touches.list)
 			if (touch.justReleased)
-				finishCallback();
+				onClose();
 
 		super.update(dt);	
 	}
