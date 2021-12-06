@@ -26,6 +26,10 @@ class HellmodeSubstate extends MusicBeatState
 		warnText = new FlxSprite().loadGraphic(Paths.image('hellmode'));
 		warnText.screenCenter();
 		add(warnText);
+
+		#if mobileC
+		addVirtualPad(NONE, A_B);
+		#end
 	}
 
 	override function update(elapsed:Float)
