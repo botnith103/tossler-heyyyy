@@ -82,7 +82,7 @@ class PrologueState extends MusicBeatState
 		}
 		// #end
 		MusicBeatState.switchState(new TitleState());
-        isVideoCurrentlyPlaying = false;
+        // isVideoCurrentlyPlaying = false;
         TitleState.lol = false;
 	}
 }

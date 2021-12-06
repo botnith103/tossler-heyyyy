@@ -24,10 +24,12 @@ class VideoPlayerD extends FlxBasic
 	{
 		super();
 
-		text = new FlxText(0, 0, 0, "Video Exited! Tap to Continue", 48);
-		text.screenCenter();
-		text.alpha = 0;
-		add(text);
+		// text = new FlxText(0, 0, 0, "Video Exited! Tap to Continue", 48);
+		// text.screenCenter();
+		// text.alpha = 0;
+		// add(text);
+
+		// will fix later -Daninnocent
 
 		// nextState = toTrans;
 
