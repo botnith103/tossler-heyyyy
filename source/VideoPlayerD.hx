@@ -18,9 +18,7 @@ class VideoPlayerD extends FlxBasic
 
 	// public var nextState:FlxState;
 
-    public var finishCallback:Void->Void = null;
-
-	var text:FlxText;
+        public var finishCallback:Void->Void = null;
 
 	public function new(source:String)
 	{
@@ -60,7 +58,6 @@ class VideoPlayerD extends FlxBasic
 	 }
 
 	function onURLChanging(url:String) {
-		text.alpha = 1;
 		if (url == 'http://exitme/') onClose(); // drity hack lol
 		trace("WebView is about to open: "+url);
 	}
