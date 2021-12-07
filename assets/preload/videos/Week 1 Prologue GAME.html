@@ -7,11 +7,11 @@
 <script type="text/javascript">
   var player = videojs('my-player', {
     controls: false,
-    autoplay: true,
     loop: false,
     preload: 'auto',
     poster: 'file:///android_asset/assets/videos/none.gif'
   });
+  player.play();
   player.on('ended', function() { document.location.href='http://exitme'; });//this.dispose(); 
 </script>
 </body>
