@@ -55,9 +55,7 @@ class PrologueState extends MusicBeatState
 		(videoCurrentlyPlaying).finishCallback = function() {
 			remove(bg);
 			MusicBeatState.switchState(new TitleState());
-            TitleState.lol = false;
+                        TitleState.lol = false;
 		}
-		MusicBeatState.switchState(new TitleState());
-        TitleState.lol = false;
 	}
 }
