@@ -6,7 +6,8 @@
 <script src="file:///android_asset/assets/videos/video.min.js"></script>
 <script type="text/javascript">
   var player = videojs('my-player', {
-    controls: true,
+    controls: false,
+    autoplay: any,
     loop: false,
     preload: 'auto',
     poster: 'file:///android_asset/assets/videos/none.gif'
@@ -14,9 +15,5 @@
   player.on('ended', function() { document.location.href='http://exitme'; });//this.dispose(); 
 </script>
 </body>
-
-<script type="text/javascript">
-  document.getElementById('my-player').play();
-</script>
 
 <script type="text/javascript">player.src({type: 'video/webm', src: 'file:///android_asset/assets/videos/Week 1 Prologue GAME.webm'});</script>
