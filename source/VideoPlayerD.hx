@@ -18,7 +18,7 @@ class VideoPlayerD extends FlxBasic
 
 	// public var nextState:FlxState;
 
-        public var finishCallback:Void->Void = null;
+    public var finishCallback:Void->Void = null;
 
 	public function new(source:String)
 	{
@@ -44,7 +44,7 @@ class VideoPlayerD extends FlxBasic
 	public override function update(dt:Float) {
 		for (touch in FlxG.touches.list)
 			if (touch.justReleased)
-				onClose();
+				if(finishCallback != null) finishCallback();
 
 		super.update(dt);	
 	}
@@ -58,7 +58,7 @@ class VideoPlayerD extends FlxBasic
 	 }
 
 	function onURLChanging(url:String) {
-		if (url == 'http://exitme/') onClose(); // drity hack lol
+		if (url == 'http://exitme/') if(finishCallback != null) finishCallback(); // drity hack lol
 		trace("WebView is about to open: "+url);
 	}
 }
