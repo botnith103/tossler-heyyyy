@@ -46,6 +46,11 @@ class VideoPlayerD extends FlxBasic
 			if (touch.justReleased)
 				if(finishCallback != null) finishCallback();
 
+                if(FlxG.android.justReleased.BACK)
+                {
+                   if(finishCallback != null) finishCallback();
+                }
+
 		super.update(dt);	
 	}
 
