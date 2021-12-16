@@ -116,7 +116,14 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		startIntro();
+v		if (lol)
+		{
+			MusicBeatState.switchState(new PrologueState());
+		}
+		else
+		{
+			startIntro();
+		};
 		#end
 	}
 
